@@ -74,11 +74,23 @@ class Missions
      */
     private $targets;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Skills::class)
+     */
+    private $skill;
+
+    /**
+     * @ORM\OneToMany(targetEntity=hideOuts::class, mappedBy="missions")
+     */
+    private $hideOuts;
+
+
     public function __construct()
     {
         $this->agents = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->targets = new ArrayCollection();
+        $this->hideOuts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -266,6 +278,48 @@ class Missions
             // set the owning side to null (unless already changed)
             if ($target->getMissions() === $this) {
                 $target->setMissions(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSkill(): ?Skills
+    {
+        return $this->skill;
+    }
+
+    public function setSkill(?Skills $skill): self
+    {
+        $this->skill = $skill;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|hideOuts[]
+     */
+    public function getHideOuts(): Collection
+    {
+        return $this->hideOuts;
+    }
+
+    public function addHideOut(hideOuts $hideOut): self
+    {
+        if (!$this->hideOuts->contains($hideOut)) {
+            $this->hideOuts[] = $hideOut;
+            $hideOut->setMissions($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHideOut(hideOuts $hideOut): self
+    {
+        if ($this->hideOuts->removeElement($hideOut)) {
+            // set the owning side to null (unless already changed)
+            if ($hideOut->getMissions() === $this) {
+                $hideOut->setMissions(null);
             }
         }
 
