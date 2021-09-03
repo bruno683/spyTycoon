@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MissionsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -56,6 +58,38 @@ class Missions
      * @ORM\Column(type="datetime")
      */
     private $endDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Agents::class, mappedBy="missions")
+     */
+    private $agents;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Contacts::class, mappedBy="missions")
+     */
+    private $contacts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Targets::class, mappedBy="missions")
+     */
+    private $targets;
+
+    /**
+     * @ORM\OneToOne(targetEntity=hideOuts::class, cascade={"persist", "remove"})
+     */
+    private $hideOut;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Skills::class, cascade={"persist", "remove"})
+     */
+    private $skill;
+
+    public function __construct()
+    {
+        $this->agents = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
+        $this->targets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -154,6 +188,120 @@ class Missions
     public function setEndDate(\DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Agents[]
+     */
+    public function getAgents(): Collection
+    {
+        return $this->agents;
+    }
+
+    public function addAgent(Agents $agent): self
+    {
+        if (!$this->agents->contains($agent)) {
+            $this->agents[] = $agent;
+            $agent->setMissions($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgent(Agents $agent): self
+    {
+        if ($this->agents->removeElement($agent)) {
+            // set the owning side to null (unless already changed)
+            if ($agent->getMissions() === $this) {
+                $agent->setMissions(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Contacts[]
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contacts $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts[] = $contact;
+            $contact->setMissions($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contacts $contact): self
+    {
+        if ($this->contacts->removeElement($contact)) {
+            // set the owning side to null (unless already changed)
+            if ($contact->getMissions() === $this) {
+                $contact->setMissions(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Targets[]
+     */
+    public function getTargets(): Collection
+    {
+        return $this->targets;
+    }
+
+    public function addTarget(Targets $target): self
+    {
+        if (!$this->targets->contains($target)) {
+            $this->targets[] = $target;
+            $target->setMissions($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTarget(Targets $target): self
+    {
+        if ($this->targets->removeElement($target)) {
+            // set the owning side to null (unless already changed)
+            if ($target->getMissions() === $this) {
+                $target->setMissions(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getHideOut(): ?hideOuts
+    {
+        return $this->hideOut;
+    }
+
+    public function setHideOut(?hideOuts $hideOut): self
+    {
+        $this->hideOut = $hideOut;
+
+        return $this;
+    }
+
+    public function getSkill(): ?Skills
+    {
+        return $this->skill;
+    }
+
+    public function setSkill(?Skills $skill): self
+    {
+        $this->skill = $skill;
 
         return $this;
     }
