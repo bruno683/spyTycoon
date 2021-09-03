@@ -3,6 +3,9 @@
 namespace App\DataFixtures;
 
 use App\Entity\Agents;
+use App\Entity\Contacts;
+use App\Entity\HideOuts;
+use App\Entity\Skills;
 use App\Entity\Targets;
 use Faker\Factory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -34,6 +37,35 @@ class AppFixtures extends Fixture
                 ->setMissions(null);
 
             $manager->persist($agent);
+        }
+        for ($i = 0; $i <= 50; $i++) {
+            $contact = new Contacts();
+            $contact->setLastName($faker->lastName())
+                ->setFirstName($faker->firstName())
+                ->setCodeName($faker->colorName())
+                ->setBirthDate($faker->dateTimeBetween($startDate = ' - 65 yars', $endDate = ' -25 years', $timezone = null))
+                ->setNationality($faker->country())
+                ->setMissions(null);
+
+            $manager->persist($contact);
+        }
+
+        for ($i = 0; $i <= 5; $i++) {
+            $skill = new Skills();
+            $skill
+                ->setName('skill');
+
+            $manager->persist($skill);
+        }
+
+        for ($i = 0; $i <= 80; $i++) {
+            $hideOut = new HideOuts();
+            $hideOut->setCode($faker->buildingNumber())
+                ->setAdress($faker->address())
+                ->setCountry($faker->country())
+                ->setType('Maison abandonnée')
+                ->setMissions(null);
+            $manager->persist($hideOut);
         }
         $manager->flush();
     }

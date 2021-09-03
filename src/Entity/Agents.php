@@ -50,13 +50,15 @@ class Agents
     private $missions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Skills::class, mappedBy="agents")
+     * @ORM\ManyToMany(targetEntity=Skills::class, inversedBy="agents")
      */
-    private $skill;
+    private $skills;
+
 
     public function __construct()
     {
         $this->skill = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -139,16 +141,15 @@ class Agents
     /**
      * @return Collection|Skills[]
      */
-    public function getSkill(): Collection
+    public function getSkills(): Collection
     {
-        return $this->skill;
+        return $this->skills;
     }
 
     public function addSkill(Skills $skill): self
     {
-        if (!$this->skill->contains($skill)) {
-            $this->skill[] = $skill;
-            $skill->setAgents($this);
+        if (!$this->skills->contains($skill)) {
+            $this->skills[] = $skill;
         }
 
         return $this;
@@ -156,12 +157,7 @@ class Agents
 
     public function removeSkill(Skills $skill): self
     {
-        if ($this->skill->removeElement($skill)) {
-            // set the owning side to null (unless already changed)
-            if ($skill->getAgents() === $this) {
-                $skill->setAgents(null);
-            }
-        }
+        $this->skills->removeElement($skill);
 
         return $this;
     }

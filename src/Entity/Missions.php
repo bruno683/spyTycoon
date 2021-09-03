@@ -74,15 +74,17 @@ class Missions
      */
     private $targets;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Skills::class)
-     */
-    private $skill;
 
     /**
      * @ORM\OneToMany(targetEntity=hideOuts::class, mappedBy="missions")
      */
     private $hideOuts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Skills::class, mappedBy="missions")
+     */
+    private $skill;
+
 
 
     public function __construct()
@@ -91,6 +93,7 @@ class Missions
         $this->contacts = new ArrayCollection();
         $this->targets = new ArrayCollection();
         $this->hideOuts = new ArrayCollection();
+        $this->skill = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -284,17 +287,6 @@ class Missions
         return $this;
     }
 
-    public function getSkill(): ?Skills
-    {
-        return $this->skill;
-    }
-
-    public function setSkill(?Skills $skill): self
-    {
-        $this->skill = $skill;
-
-        return $this;
-    }
 
     /**
      * @return Collection|hideOuts[]
@@ -320,6 +312,36 @@ class Missions
             // set the owning side to null (unless already changed)
             if ($hideOut->getMissions() === $this) {
                 $hideOut->setMissions(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Skills[]
+     */
+    public function getSkill(): Collection
+    {
+        return $this->skill;
+    }
+
+    public function addSkill(Skills $skill): self
+    {
+        if (!$this->skill->contains($skill)) {
+            $this->skill[] = $skill;
+            $skill->setMissions($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skills $skill): self
+    {
+        if ($this->skill->removeElement($skill)) {
+            // set the owning side to null (unless already changed)
+            if ($skill->getMissions() === $this) {
+                $skill->setMissions(null);
             }
         }
 

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\SkillsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,19 +24,20 @@ class Skills
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Agents::class, inversedBy="skill")
-     */
-    private $agents;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Missions::class, mappedBy="skill")
+     * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="skill")
      */
     private $missions;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Agents::class, mappedBy="skills")
+     */
+    private $agents;
+
     public function __construct()
     {
-        $this->missions = new ArrayCollection();
+        $this->agents = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -56,43 +56,40 @@ class Skills
         return $this;
     }
 
-    public function getAgents(): ?Agents
+    public function getMissions(): ?Missions
     {
-        return $this->agents;
+        return $this->missions;
     }
 
-    public function setAgents(?Agents $agents): self
+    public function setMissions(?Missions $missions): self
     {
-        $this->agents = $agents;
+        $this->missions = $missions;
 
         return $this;
     }
 
     /**
-     * @return Collection|Missions[]
+     * @return Collection|Agents[]
      */
-    public function getMissions(): Collection
+    public function getAgents(): Collection
     {
-        return $this->missions;
+        return $this->agents;
     }
 
-    public function addMission(Missions $mission): self
+    public function addAgent(Agents $agent): self
     {
-        if (!$this->missions->contains($mission)) {
-            $this->missions[] = $mission;
-            $mission->setSkill($this);
+        if (!$this->agents->contains($agent)) {
+            $this->agents[] = $agent;
+            $agent->addSkill($this);
         }
 
         return $this;
     }
 
-    public function removeMission(Missions $mission): self
+    public function removeAgent(Agents $agent): self
     {
-        if ($this->missions->removeElement($mission)) {
-            // set the owning side to null (unless already changed)
-            if ($mission->getSkill() === $this) {
-                $mission->setSkill(null);
-            }
+        if ($this->agents->removeElement($agent)) {
+            $agent->removeSkill($this);
         }
 
         return $this;
