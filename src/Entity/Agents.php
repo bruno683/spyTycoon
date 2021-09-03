@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AgentsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,16 @@ class Agents
      * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="agents")
      */
     private $missions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Skills::class, mappedBy="agents")
+     */
+    private $skill;
+
+    public function __construct()
+    {
+        $this->skill = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +132,36 @@ class Agents
     public function setMissions(?Missions $missions): self
     {
         $this->missions = $missions;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Skills[]
+     */
+    public function getSkill(): Collection
+    {
+        return $this->skill;
+    }
+
+    public function addSkill(Skills $skill): self
+    {
+        if (!$this->skill->contains($skill)) {
+            $this->skill[] = $skill;
+            $skill->setAgents($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skills $skill): self
+    {
+        if ($this->skill->removeElement($skill)) {
+            // set the owning side to null (unless already changed)
+            if ($skill->getAgents() === $this) {
+                $skill->setAgents(null);
+            }
+        }
 
         return $this;
     }

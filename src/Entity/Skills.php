@@ -22,6 +22,11 @@ class Skills
      */
     private $name;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Agents::class, inversedBy="skill")
+     */
+    private $agents;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +40,18 @@ class Skills
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getAgents(): ?Agents
+    {
+        return $this->agents;
+    }
+
+    public function setAgents(?Agents $agents): self
+    {
+        $this->agents = $agents;
 
         return $this;
     }
