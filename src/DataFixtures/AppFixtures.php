@@ -13,7 +13,7 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create();
         // $product = new Product();
-        for ($i = 0; $i <= 10; $i++) {
+        for ($i = 0; $i <= 40; $i++) {
             $contact = new Contacts();
             $contact->setLastName($faker->lastName())
                 ->setFirstName($faker->firstName())
