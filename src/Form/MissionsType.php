@@ -19,8 +19,7 @@ class MissionsType extends AbstractType
             ->add('type')
             ->add('status')
             ->add('startDate')
-            ->add('endDate')
-        ;
+            ->add('endDate');
     }
 
     public function configureOptions(OptionsResolver $resolver)
