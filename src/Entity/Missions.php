@@ -74,16 +74,6 @@ class Missions
      */
     private $targets;
 
-    /**
-     * @ORM\OneToOne(targetEntity=hideOuts::class, cascade={"persist", "remove"})
-     */
-    private $hideOut;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Skills::class, cascade={"persist", "remove"})
-     */
-    private $skill;
-
     public function __construct()
     {
         $this->agents = new ArrayCollection();
@@ -278,30 +268,6 @@ class Missions
                 $target->setMissions(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getHideOut(): ?hideOuts
-    {
-        return $this->hideOut;
-    }
-
-    public function setHideOut(?hideOuts $hideOut): self
-    {
-        $this->hideOut = $hideOut;
-
-        return $this;
-    }
-
-    public function getSkill(): ?Skills
-    {
-        return $this->skill;
-    }
-
-    public function setSkill(?Skills $skill): self
-    {
-        $this->skill = $skill;
 
         return $this;
     }
