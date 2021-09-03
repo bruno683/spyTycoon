@@ -2,8 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Skills;
 use Faker\Factory;
-use App\Entity\Contacts;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -13,15 +13,11 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create();
         // $product = new Product();
-        for ($i = 0; $i <= 40; $i++) {
-            $contact = new Contacts();
-            $contact->setLastName($faker->lastName())
-                ->setFirstName($faker->firstName())
-                ->setBirthDate($faker->dateTimeBetween($startDate = '-40 years', $endDate = '-25 years', null))
-                ->setMissions(null)
-                ->setCodeName($faker->colorName())
-                ->setNationality($faker->country());
-            $manager->persist($contact);
+        for ($i = 0; $i <= 5; $i++) {
+            $skills = new Skills();
+            $skills->setName('specialitée')
+                ->setAgents(null);
+            $manager->persist($skills);
         }
 
 
