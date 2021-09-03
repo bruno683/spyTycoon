@@ -75,10 +75,7 @@ class Missions
     private $targets;
 
 
-    /**
-     * @ORM\OneToMany(targetEntity=hideOuts::class, mappedBy="missions")
-     */
-    private $hideOuts;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Skills::class, mappedBy="missions")
@@ -287,36 +284,6 @@ class Missions
         return $this;
     }
 
-
-    /**
-     * @return Collection|hideOuts[]
-     */
-    public function getHideOuts(): Collection
-    {
-        return $this->hideOuts;
-    }
-
-    public function addHideOut(hideOuts $hideOut): self
-    {
-        if (!$this->hideOuts->contains($hideOut)) {
-            $this->hideOuts[] = $hideOut;
-            $hideOut->setMissions($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHideOut(hideOuts $hideOut): self
-    {
-        if ($this->hideOuts->removeElement($hideOut)) {
-            // set the owning side to null (unless already changed)
-            if ($hideOut->getMissions() === $this) {
-                $hideOut->setMissions(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Skills[]

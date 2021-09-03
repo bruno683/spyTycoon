@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Agents;
 use App\Entity\Contacts;
-use App\Entity\HideOuts;
+use App\Entity\Planques;
 use App\Entity\Skills;
 use App\Entity\Targets;
 use Faker\Factory;
@@ -57,16 +57,17 @@ class AppFixtures extends Fixture
 
             $manager->persist($skill);
         }
-
         for ($i = 0; $i <= 80; $i++) {
-            $hideOut = new HideOuts();
-            $hideOut->setCode($faker->buildingNumber())
-                ->setAdress($faker->address())
+            $planques = new Planques();
+            $planques->setAdress($faker->address())
+                ->setCodeName($faker->colorName())
                 ->setCountry($faker->country())
-                ->setType('Maison abandonnée')
-                ->setMissions(null);
-            $manager->persist($hideOut);
+                ->setType('unknown');
+
+            $manager->persist($planques);
         }
+
+
         $manager->flush();
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\HideOutsRepository;
+use App\Repository\PlanquesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=HideOutsRepository::class)
+ * @ORM\Entity(repositoryClass=PlanquesRepository::class)
  */
-class HideOuts
+class Planques
 {
     /**
      * @ORM\Id
@@ -18,9 +18,9 @@ class HideOuts
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $code;
+    private $codeName;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -37,24 +37,19 @@ class HideOuts
      */
     private $type;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="hideOuts")
-     */
-    private $missions;
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCode(): ?int
+    public function getCodeName(): ?string
     {
-        return $this->code;
+        return $this->codeName;
     }
 
-    public function setCode(int $code): self
+    public function setCodeName(string $codeName): self
     {
-        $this->code = $code;
+        $this->codeName = $codeName;
 
         return $this;
     }
@@ -91,18 +86,6 @@ class HideOuts
     public function setType(string $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getMissions(): ?Missions
-    {
-        return $this->missions;
-    }
-
-    public function setMissions(?Missions $missions): self
-    {
-        $this->missions = $missions;
 
         return $this;
     }
