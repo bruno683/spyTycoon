@@ -13,9 +13,7 @@ class SkillsType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('missions')
-            ->add('agents')
-        ;
+            ->add('missions');
     }
 
     public function configureOptions(OptionsResolver $resolver)
