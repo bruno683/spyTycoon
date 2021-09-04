@@ -18,16 +18,8 @@ class MissionsType extends AbstractType
             ->add('description')
             ->add('type')
             ->add('status')
-            ->add('startDate', DateType::class, [
-                'widget' => 'choice',
-                'format' => 'y-M-d',
-                'years' => range(date("Y"), 2050)
-            ])
-            ->add('endDate', DateType::class, [
-                'widget' => 'choice',
-                'format' => 'y-M-d',
-                'years' => range(date("Y"), 2050)
-            ]);
+            ->add('startDate')
+            ->add('endDate');
     }
 
     public function configureOptions(OptionsResolver $resolver)
