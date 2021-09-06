@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Skills;
 use App\Form\SkillsType;
-use App\Entity\SkillsRepository;
+use App\Repository\SkillsRepository as RepositorySkillsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SkillsController extends AbstractController
 {
     #[Route('/', name: 'skills_index', methods: ['GET'])]
-    public function index(SkillsRepository $skillsRepository): Response
+    public function index(RepositorySkillsRepository $skillsRepository): Response
     {
         return $this->render('skills/index.html.twig', [
             'skills' => $skillsRepository->findAll(),
@@ -71,7 +71,7 @@ class SkillsController extends AbstractController
     #[Route('/{id}', name: 'skills_delete', methods: ['POST'])]
     public function delete(Request $request, Skills $skill): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$skill->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $skill->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($skill);
             $entityManager->flush();
