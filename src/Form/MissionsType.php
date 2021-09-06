@@ -3,13 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Agents;
+use App\Entity\Contacts;
 use App\Entity\Missions;
-use App\Repository\AgentsRepository;
+use App\Entity\Planques;
+use App\Entity\Skills;
+use App\Entity\Targets;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\ChoiceList\ChoiceList;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -27,11 +27,24 @@ class MissionsType extends AbstractType
             ->add('startDate')
             ->add('endDate')
             ->add('agents', EntityType::class, [
-                'class' => Agents::class, 'query_builder' => function (AgentsRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.lastName', 'DESC');
-                },
+                'class' => Agents::class,
                 'choice_label' => 'lastName',
+                'expanded' => false,
+                'multiple' => true,
+            ])
+            ->add('contacts', EntityType::class, [
+                'class' => Contacts::class,
+                'choice_label' => 'lastName',
+                'multiple' => true,
+            ])
+            ->add('targets', EntityType::class, [
+                'class' => Targets::class,
+                'choice_label' => 'lastName',
+                'multiple' => true,
+            ])
+            ->add('skill', EntityType::class, [
+                'class' => Skills::class,
+                'choice_label' => 'name'
             ]);
     }
 

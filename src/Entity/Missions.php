@@ -61,16 +61,19 @@ class Missions
 
     /**
      * @ORM\OneToMany(targetEntity=Agents::class, mappedBy="missions")
+     * 
      */
     private $agents;
 
     /**
      * @ORM\OneToMany(targetEntity=Contacts::class, mappedBy="missions")
+     *
      */
     private $contacts;
 
     /**
      * @ORM\OneToMany(targetEntity=Targets::class, mappedBy="missions")
+     * 
      */
     private $targets;
 
@@ -79,6 +82,7 @@ class Missions
 
     /**
      * @ORM\OneToMany(targetEntity=Skills::class, mappedBy="missions")
+     * 
      */
     private $skill;
 
