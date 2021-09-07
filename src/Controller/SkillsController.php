@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Skills;
 use App\Form\SkillsType;
-use App\Repository\SkillsRepository as RepositorySkillsRepository;
+use App\Repository\SkillsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SkillsController extends AbstractController
 {
     #[Route('/', name: 'skills_index', methods: ['GET'])]
-    public function index(RepositorySkillsRepository $skillsRepository): Response
+    public function index(SkillsRepository $skillsRepository): Response
     {
         return $this->render('skills/index.html.twig', [
             'skills' => $skillsRepository->findAll(),

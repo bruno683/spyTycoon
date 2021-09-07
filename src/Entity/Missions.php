@@ -77,14 +77,15 @@ class Missions
      */
     private $targets;
 
-
-
-
     /**
-     * @ORM\OneToMany(targetEntity=Skills::class, mappedBy="missions")
-     * 
+     * @ORM\ManyToOne(targetEntity=Skills::class, inversedBy="missions")
      */
     private $skill;
+
+
+
+
+
 
 
 
@@ -288,34 +289,16 @@ class Missions
         return $this;
     }
 
-
-    /**
-     * @return Collection|Skills[]
-     */
-    public function getSkill(): Collection
+    public function getSkill(): ?Skills
     {
         return $this->skill;
     }
 
-    public function addSkill(Skills $skill): self
+    public function setSkill(?Skills $skill): self
     {
-        if (!$this->skill->contains($skill)) {
-            $this->skill[] = $skill;
-            $skill->setMissions($this);
-        }
+        $this->skill = $skill;
 
         return $this;
     }
 
-    public function removeSkill(Skills $skill): self
-    {
-        if ($this->skill->removeElement($skill)) {
-            // set the owning side to null (unless already changed)
-            if ($skill->getMissions() === $this) {
-                $skill->setMissions(null);
-            }
-        }
-
-        return $this;
-    }
 }

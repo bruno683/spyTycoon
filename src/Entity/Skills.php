@@ -23,19 +23,21 @@ class Skills
      */
     private $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Missions::class, inversedBy="skill")
-     */
-    private $missions;
 
     /**
      * @ORM\ManyToMany(targetEntity=Agents::class, mappedBy="skills")
      */
     private $agents;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Missions::class, mappedBy="skill")
+     */
+    private $missions;
+
     public function __construct()
     {
         $this->agents = new ArrayCollection();
+        $this->missions = new ArrayCollection();
     }
 
 
@@ -90,6 +92,28 @@ class Skills
     {
         if ($this->agents->removeElement($agent)) {
             $agent->removeSkill($this);
+        }
+
+        return $this;
+    }
+
+    public function addMission(Missions $mission): self
+    {
+        if (!$this->missions->contains($mission)) {
+            $this->missions[] = $mission;
+            $mission->setSkill($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMission(Missions $mission): self
+    {
+        if ($this->missions->removeElement($mission)) {
+            // set the owning side to null (unless already changed)
+            if ($mission->getSkill() === $this) {
+                $mission->setSkill(null);
+            }
         }
 
         return $this;
